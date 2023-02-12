@@ -1,7 +1,6 @@
 {
-  "name": "tvsbackend",
+  "name": "meddoxy",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/index.js"
@@ -15,5 +14,15 @@
     "mongoose": "^6.6.7",
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.20"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DoxxSvm/TvsBackend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DoxxSvm/TvsBackend/issues"
+  },
+  "homepage": "https://github.com/DoxxSvm/TvsBackend#readme",
+  "description": ""
 }

@@ -1,6 +1,10 @@
 const mongoose=require('mongoose')
-const employeeSchema = mongoose.Schema({
-    employeeID:{
+const userSchema = mongoose.Schema({
+    userID:{
+        type:String,
+        required:true
+    },
+    mobile:{
         type:String,
         required:true
     },
@@ -10,4 +14,4 @@ const employeeSchema = mongoose.Schema({
     }
 },{timestamps:true})
 
-module.exports = mongoose.model("Employee",employeeSchema)
+module.exports = mongoose.model("User",userSchema)

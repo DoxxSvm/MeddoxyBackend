@@ -32,7 +32,7 @@ const sendMail = async (reciever, mailSub, mailBody) => {
             },
         });
         const mailInfo = await transporter.sendMail({
-            from: "'Meddoxy aah aah aah aahhha....' <meddoxyhelp@gmail.com",
+            from: "'MedDoxy' <meddoxyhelp@gmail.com",
             to: reciever,
             subject: mailSub,
             text: mailBody,

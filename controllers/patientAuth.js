@@ -1,18 +1,20 @@
 const user = require('../models/Users')
 const patient = require('../models/Patient')
+const {sendOtp} = require('../controllers/sendOtp')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const SECRET_KEY = "DOXXSVM"
 
 const existing =  async (req,res) =>{
-    const {mobile} =req.body
+    const {email} =req.body
     try {
-        const existingUser = await user.findOne({mobile:mobile})
+        const existingUser = await user.findOne({email:email})
         if(!existingUser){
             return res.status(404).json({"message":"User not found"})
         }
-        res.status(200).json({ user: existingUser})
+        await sendOtp(req,res)
+        
     } catch (error) {
         console.log(error.message)
         res.status(500).json({"message":"something went wrong"})
@@ -38,28 +40,28 @@ const signin = async (req,res) =>{
 }
 
 const signup= async (req, res) => {
-    const {mobile,password,name,address,email} = req.body
+    const {email,name,address} = req.body
     try {
     
-        const hashedPass = await bcrypt.hash(password, 10)
+        // const hashedPass = await bcrypt.hash(password, 10)
         const id = generateUserID()
         console.log(id)
         const result = await user.create({
-            mobile: mobile,
-            password: hashedPass,
-            userID:id
+            userID:id,
+            userType:"PATIENT",
+            email:email
         })
         console.log(result)
         const result2=await patient.create({
             patientID:id,
             name:name,
             address:address,
-            email:email
         })
         console.log(result2)
+        sendOtp(req,res)
 
-        const token = jwt.sign({ mobile: mobile}, SECRET_KEY)
-        res.status(201).json({ message:"patient added successfully",user: result, token: token })
+        // const token = jwt.sign({ mobile: mobile}, SECRET_KEY)
+        //res.status(201).json({ message:"patient added successfully",user: result})
     }
     catch (error) {
         console.log(error.message)

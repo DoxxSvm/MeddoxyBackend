@@ -6,7 +6,7 @@ const app = express()
 const MONGO_URI = "mongodb+srv://doxx:822eB6x7yq2aPzX@cluster0.ht4cn.mongodb.net/Meddoxy?retryWrites=true&w=majority"
 
 dotevn.config()
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5001
 
 app.use(express.json())
 app.use('/patient',patientRoutes)

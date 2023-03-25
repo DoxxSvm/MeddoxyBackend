@@ -1,5 +1,6 @@
 const user = require('../models/Users')
 const patient = require('../models/Patient')
+const doctor = require('../models/Doctor')
 const {sendOtp} = require('../controllers/sendOtp')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -38,6 +39,42 @@ const signin = async (req,res) =>{
         res.status(500).json({"message":"something went wrong"})
     }
 }
+ const docSignup=async(req,res)=>{
+    const {email,name,address,days,fees,speciality,description,experience} = req.body
+    try {
+    
+        // const hashedPass = await bcrypt.hash(password, 10)
+        const id = generateUserID()
+        console.log(id)
+        const result = await user.create({
+            userID:id,
+            userType:"DOCTOR",
+            email:email
+        })
+        console.log(result)
+        const result2=await doctor.create({
+            doctorID:id,
+            name:name,
+            address:address,
+            daysAvailable:days,
+            specialization:speciality,
+            fees:fees,
+            description:description,
+            experience:experience,
+            consultations:consulations(),
+            rating:doxx()
+        })
+        console.log(result2)
+        sendOtp(req,res)
+
+        // const token = jwt.sign({ mobile: mobile}, SECRET_KEY)
+        //res.status(201).json({ message:"patient added successfully",user: result})
+    }
+    catch (error) {
+        console.log(error.message)
+        res.status(500).json({"message":"something went wrong"})
+    }
+ }
 
 const signup= async (req, res) => {
     const {email,name,address} = req.body
@@ -79,4 +116,16 @@ function generateUserID() {
     return retVal;
 }
 
-module.exports = {existing, signin, signup}
+function doxx() {
+    charset = ["3.5","4.1","4.9","4.8","4.6","3.9","4.2"]
+    var n = charset.length
+    return charset[Math.floor(Math.random() * n)]
+    
+}
+function consulations() {
+    
+    return Math.floor(Math.random() * 10000)
+    
+}
+
+module.exports = {existing, signin, signup,docSignup}

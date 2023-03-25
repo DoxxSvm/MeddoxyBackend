@@ -1,20 +1,73 @@
 const express = require('express')
-const patientRoutes = require('../routes/patientRoutes')
+const {patientRouter,utilRouter} = require('../routes/patientRoutes')
 const mongoose = require('mongoose')
 const dotevn = require('dotenv')
 const app = express()
+// INITIALIZE NPMS
+var AWS = require('aws-sdk'),multer = require('multer'),multerS3 = require('multer-s3'),path = require('path');
+
+// CONFIGURATION OF S3
+AWS.config.update({
+    secretAccessKey: 'wm8d83yNEsmHGDnLvQV7fO2Ip8WGaUQ',
+    accessKeyId: '44W5ESY7XNRD',
+    region: 'ap-south-1'
+});
+
+// CREATE OBJECT FOR S3
+const S3 = new AWS.S3();
+// CREATE MULTER FUNCTION FOR UPLOAD
+var upload = multer({
+    // CREATE MULTER-S3 FUNCTION FOR STORAGE
+    storage: multerS3({
+        s3: S3,
+
+        // bucket - WE CAN PASS SUB FOLDER NAME ALSO LIKE 'bucket-name/sub-olvder1'
+        bucket: 'doxx3434',
+        // META DATA FOR PUTTING FIELD NAME
+        metadata: function (req, file, cb) {
+            cb(null, { fieldName: file.fieldname });
+        },
+        // SET / MODIFY ORIGINAL FILE NAME
+        key: function (req, file, cb) {
+            cb(null, file.originalname); //set unique file name if you wise using Date.toISOString()
+            // EXAMPLE 1
+            // cb(null, Date.now() + '-' + file.originalname);
+            // EXAMPLE 2
+            // cb(null, new Date().toISOString() + '-' + file.orimginalname);
+
+        }
+    }),
+    // SET DEFAULT FILE SIZE UPLOAD LIMIT
+    limits: { fileSize: 1024 * 1024 * 50 }, // 50MB
+    // FILTER OPTIONS LIKE VALIDATING FILE EXTENSION
+    fileFilter: function(req, file, cb) {
+        const filetypes = /jpeg|jpg|png/;
+        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = filetypes.test(file.mimetype);
+        if (mimetype && extname) {
+            return cb(null, true);
+        } else {
+            cb("Error: Allow images only of extensions jpeg|jpg|png !");
+        }
+    }
+});
 const MONGO_URI = "mongodb+srv://doxx:822eB6x7yq2aPzX@cluster0.ht4cn.mongodb.net/Meddoxy?retryWrites=true&w=majority"
 
 dotevn.config()
 const port = process.env.PORT || 5001
 
 app.use(express.json())
-app.use('/patient',patientRoutes)
+app.use('/patient',patientRouter)
+app.use('/utils',utilRouter)
 
 app.get('/',(req,res)=>{
     res.send("Meddoxy backend")
-    // refresh key: 1//04GaeKLQLu5sJCgYIARAAGAQSNwF-L9IrAe5JLByPcT2ZaFPAW6lgMOlSfB0o59Dm4GXqGAweH-m5mc5zbkMnEpN-9vw__9kewN4
 })
+
+app.post('/upload', upload.single('file'), function (req, res, next) {
+    console.log('Uploaded!');
+    res.send(req.file);
+});
 
 mongoose.connect(MONGO_URI)
 .then(()=>{

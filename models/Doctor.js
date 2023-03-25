@@ -4,11 +4,11 @@ const doctorSchema = mongoose.Schema({
         type:String,
         required:true
     },
-    name:{
+    description:{
         type:String,
         required:true
     },
-    email:{
+    name:{
         type:String,
         required:true
     },
@@ -21,14 +21,16 @@ const doctorSchema = mongoose.Schema({
         required:true
     },
     specialization:{
-        type:[String],
+        type:String,
         required:true
     },
     fees:{
         type:Number,
         required:true
     },
-    rating:Number,
+    rating:String,
+    experience:Number,
+    consultations:Number,
     image:String,
 
     

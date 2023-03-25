@@ -2,10 +2,10 @@ const { google } = require("googleapis");
 const nodemailer = require("nodemailer");
 
 const CLIENT_ID =
-    "017525896-hhfdan0g65p9u1icno3j8ak9qng718eo.apps.googleusercontent.com";
-const CLIENT_SECRET = "SPX-S2IYq-t8VIbEKgSWwwEI2nH4ZNmq";
+    "670017525896-hhfdan0g65p9u1icno3j8ak9qng718eo.apps.googleusercontent.com";
+const CLIENT_SECRET = "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";
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN = "1//04E_ucsXxEiNXCgYIARAAGAQSNwF-L9IrGyCugFVcGJNOj08XfokJmVW52v-PD7_nY59SKsUKngdBuc6tho25EJ3bLvXvHeNO";
+const REFRESH_TOKEN = "1//04E_ucsXxEiNXCgYIARAAGAQSNwF-L9IrGyCugFVcGJNOj08XfokJmVW52v-PD7_nY59SKsUKngdBuc6tho25EJ3bLvXvHeNO3mA";
 const G_MAIL = "meddoxyhelp@gmail.com";
 
 const oAuthClient = new google.auth.OAuth2(

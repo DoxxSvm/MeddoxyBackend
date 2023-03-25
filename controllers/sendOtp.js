@@ -14,7 +14,8 @@ const sendOtp = async (req, res) => {
         return res.status(200).json({ "message": "OTP sent" })
     }
     catch (error) {
-        res.status(500).json({ "message": "something went wrong" })
+        console.log(error)
+        res.status(500).json({ "message": "something went wrong from otp" })
     }
 
 }

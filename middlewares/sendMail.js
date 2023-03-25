@@ -3,9 +3,9 @@ const nodemailer = require("nodemailer");
 
 const CLIENT_ID =
     "670017525896-hhfdan0g65p9u1icno3j8ak9qng718eo.apps.googleusercontent.com";
-const CLIENT_SECRET = "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";
+const CLIENT_SECRET = "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";
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN = "1//04GaeKLQLu5sJCgYIARAAGAQSNwF-L9IrAe5JLByPcT2ZaFPAW6lgMOlSfB0o59Dm4GXqGAweH-m5mc5zbkMnEpN-9vw__9kewN4";
+const REFRESH_TOKEN = "1//04ED3NL2FgwFMCgYIARAAGAQSNwF-L9Ir1fMGrVXn5QitbUn4S1t85LKj6BT29PD8_gmJm7ikgvzATOgA22_3q7JyKNeTI7VUH8k";
 const G_MAIL = "meddoxyhelp@gmail.com";
 
 const oAuthClient = new google.auth.OAuth2(
@@ -32,7 +32,7 @@ const sendMail = async (reciever, mailSub, mailBody) => {
             },
         });
         const mailInfo = await transporter.sendMail({
-            from: "'MedDoxy' <meddoxyhelp@gmail.com",
+            from: "'MedDoxy' <meddoxyhelp@gmail.com>",
             to: reciever,
             subject: mailSub,
             text: mailBody,

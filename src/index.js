@@ -1,5 +1,6 @@
 const express = require('express')
 const {patientRouter,utilRouter} = require('../routes/patientRoutes')
+const appointmentRouter = require('../routes/appointmentRoutes')
 const mongoose = require('mongoose')
 const dotevn = require('dotenv')
 const app = express()
@@ -8,8 +9,8 @@ var AWS = require('aws-sdk'),multer = require('multer'),multerS3 = require('mult
 
 // CONFIGURATION OF S3
 AWS.config.update({
-    secretAccessKey: 'wm8d83yNEsmHGDnLvQV7fO2Ip8WGaUQ',
-    accessKeyId: '44W5ESY7XNRD',
+    secretAccessKey:process.env.AWS_SECRET_KEY ,
+    accessKeyId: process.env.AWS_ACCESS_KEY,
     region: 'ap-south-1'
 });
 
@@ -59,6 +60,7 @@ const port = process.env.PORT || 5001
 app.use(express.json())
 app.use('/patient',patientRouter)
 app.use('/utils',utilRouter)
+app.use('/appointment',appointmentRouter)
 
 app.get('/',(req,res)=>{
     res.send("Meddoxy backend")

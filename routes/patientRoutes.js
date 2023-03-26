@@ -1,7 +1,7 @@
 const express = require('express')
 const { existing, signin ,signup,docSignup} = require('../controllers/patientAuth')
 const {sendOtp, verifyOtp} = require('../controllers/sendOtp')
-const {docList,docDetails} = require('../controllers/utils')
+const {docList,docDetails,favDoctorsDetails,addFavDoctor} = require('../controllers/utils')
 const patientRouter=express.Router()
 const utilRouter = express.Router()
 
@@ -14,6 +14,10 @@ patientRouter.post('/verifyOtp',verifyOtp)
 
 utilRouter.post('/doclist',docList)
 utilRouter.post('/docdetails',docDetails)
+utilRouter.post('/favdocdetails',favDoctorsDetails)
+utilRouter.post('/addfavdoctor',addFavDoctor)
+
+
 
 
 

@@ -55,9 +55,23 @@ const rejectAppointment =async(req,res)=>{
     }
 }
 
+const updatePres =async(req,res)=>{
+    try{
+        const {appointmentID} = req.body
+        
+        const n = await appointment.deleteOne({ appointmentID:appointmentID })
+        res.status(200).json({message:"Rejected"})
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({message:"Something went wrong"})
+    }
+}
+
 const patientUpcomingAppointment =async(req,res)=>{
     try{
         const {patientID} = req.body
+
         
         const result = await appointment.find({ patientID:patientID,appointmentStatus: "UPCOMING" })
         console.log(result)
@@ -104,6 +118,7 @@ const doctorPendingAppointment =async(req,res)=>{
         
         const result = await appointment.find({ doctorID:doctorID,appointmentStatus: "PENDING" })
         console.log(result)
+        console.log("result")
         res.status(200).json(result)
     }
     catch(err){

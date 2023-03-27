@@ -1,6 +1,7 @@
 const express = require('express')
 const {patientRouter,utilRouter} = require('../routes/patientRoutes')
 const appointmentRouter = require('../routes/appointmentRoutes')
+const appointment = require('../models/Appointment')
 const mongoose = require('mongoose')
 const dotevn = require('dotenv')
 const app = express()
@@ -31,10 +32,7 @@ var upload = multer({
         // SET / MODIFY ORIGINAL FILE NAME
         key: function (req, file, cb) {
             cb(null, file.originalname); //set unique file name if you wise using Date.toISOString()
-            // EXAMPLE 1
-            // cb(null, Date.now() + '-' + file.originalname);
-            // EXAMPLE 2
-            // cb(null, new Date().toISOString() + '-' + file.orimginalname);
+            
 
         }
     }),
@@ -62,12 +60,19 @@ app.use('/patient',patientRouter)
 app.use('/utils',utilRouter)
 app.use('/appointment',appointmentRouter)
 
-app.get('/',(req,res)=>{
+app.get('/',async (req,res)=>{
+    const result = await appointment.find({ })
+        console.log(result)
     res.send("Meddoxy backend")
 })
 
-app.post('/upload', upload.single('file'), function (req, res, next) {
+app.post('/upload', upload.single('file'), async (req, res, next) =>{
     console.log('Uploaded!');
+    const result = await appointment.updateOne({appointmentID: req.body.appointmentID},{prescription:req.file.location},{upsert:true})
+
+    console.log(result)
+    console.log(req.body.appointmentID)
+
     res.send(req.file);
 });
 

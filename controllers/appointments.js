@@ -1,12 +1,18 @@
 const appointment = require('../models/Appointment')
+const patient = require('../models/Patient')
+
 const requestAppointment =async(req,res)=>{
     try{
         const {doctorID,patientID,date,slot} = req.body
         const id = generateUserID()
         console.log(id)
+        const _patient = await patient.findOne({patientID:patientID})
+        const _doctor = await patient.findOne({doctorID:doctorID})
         const result = await appointment.create({
             appointmentID:id,
             doctorID:doctorID,
+            patientName:_patient.name,
+            doctorName:_doctor.name,
             patientID:patientID,
             date:date,
             slot:slot,
@@ -26,12 +32,8 @@ const confirmAppointment =async(req,res)=>{
     try{
         const {appointmentID} = req.body
         
-        const result = await appointment.find({
-            appointmentID:appointmentID,
-        })
-        console.log(result)
         const n = await appointment.updateOne({ appointmentID:appointmentID }, { appointmentStatus: "UPCOMING" }, { upsert: true })
-        res.status(200).json(n)
+        res.status(200).json({message:"Confirmed"})
     }
     catch(err){
         console.log(err)
@@ -44,12 +46,8 @@ const rejectAppointment =async(req,res)=>{
     try{
         const {appointmentID} = req.body
         
-        const result = await appointment.find({
-            appointmentID:appointmentID
-        })
-        console.log(result)
         const n = await appointment.deleteOne({ appointmentID:appointmentID })
-        res.status(200).json(n)
+        res.status(200).json({message:"Rejected"})
     }
     catch(err){
         console.log(err)
@@ -133,7 +131,7 @@ const markAsCompleted =async(req,res)=>{
         
         const result = await appointment.updateOne({ appointmentID:appointmentID}, { appointmentStatus: "COMPLETED" }, { upsert: true })
         console.log(result)
-        res.status(200).json(result)
+        res.status(200).json({message:"Updated"})
     }
     catch(err){
         console.log(err)

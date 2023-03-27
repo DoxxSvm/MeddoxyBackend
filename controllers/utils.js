@@ -10,12 +10,16 @@ const docList = async(req,res)=>{
 }
 const docDetails=async(req,res)=>{
     const {doctorID} = req.body
-    const doc = await doctor.find({doctorID:doctorID})
+    const doc = await doctor.findOne({doctorID:doctorID})
     res.status(200).send(doc)
 }
 const favDoctorsDetails = async(req,res) =>{
-    const {doctorIDs} = req.body
-    const list = await doctor.find({ doctorID: { $in: doctorIDs } })
+    const {patientID} = req.body
+    console.log(patientID)
+    const _patient = await patient.findOne({patientID:patientID})
+    console.log(_patient)
+    const favouriteDoctor= _patient.favouriteDoctor
+    const list = await doctor.find({ doctorID: { $in: favouriteDoctor } })
     res.status(200).json(list)
 }
 const addFavDoctor = async(req,res) =>{

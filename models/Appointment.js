@@ -8,10 +8,19 @@ const appointmentSchema = mongoose.Schema({
         type:String,
         required:true
     },
+    doctorName:{
+        type:String,
+        required:true
+    },
     patientID:{
         type:String,
         required:true
     },
+    patientName:{
+        type:String,
+        required:true
+    },
+
     date:{
         type:String,
         required:true

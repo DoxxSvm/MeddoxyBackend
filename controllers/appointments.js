@@ -1,5 +1,8 @@
 const appointment = require('../models/Appointment')
 const patient = require('../models/Patient')
+const user = require('../models/Users')
+const {sendConfirmation} = require('../controllers/sendOtp')
+
 
 const requestAppointment =async(req,res)=>{
     try{
@@ -33,7 +36,18 @@ const confirmAppointment =async(req,res)=>{
         const {appointmentID} = req.body
         
         const n = await appointment.updateOne({ appointmentID:appointmentID }, { appointmentStatus: "UPCOMING" }, { upsert: true })
-        res.status(200).json({message:"Confirmed"})
+        const app = await appointment.findOne({appointmentID:appointmentID})
+        const doc = await user.findOne({userID:app.doctorID})
+        const _patient = await user.findOne({userID:app.patientID})
+
+        req.patientName = app.patientName
+        req.doctorName = app.doctorName
+        req.patientEmail = _patient.email
+        req.docEmail = doc.email
+        req.time = app.date.concat(" at",app.slot)
+        sendConfirmation(req,res)
+
+        //res.status(200).json({message:"Confirmed"})
     }
     catch(err){
         console.log(err)
@@ -55,18 +69,6 @@ const rejectAppointment =async(req,res)=>{
     }
 }
 
-const updatePres =async(req,res)=>{
-    try{
-        const {appointmentID} = req.body
-        
-        const n = await appointment.deleteOne({ appointmentID:appointmentID })
-        res.status(200).json({message:"Rejected"})
-    }
-    catch(err){
-        console.log(err)
-        res.status(500).json({message:"Something went wrong"})
-    }
-}
 
 const patientUpcomingAppointment =async(req,res)=>{
     try{

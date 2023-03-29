@@ -19,6 +19,22 @@ const sendOtp = async (req, res) => {
     }
 
 }
+const sendConfirmation = async (req, res) => {
+    try {
+    
+        var message = ""
+        await sendMail(req.patientEmail,"Booking Confimation" ,message.concat("Your appointment with ",req.doctorName," is confirmed for ",req.time))
+        message = ""
+        await sendMail(req.docEmail,"Booking Confimation"  ,message.concat("Your appointment with ",req.patientName," is confirmed for ",req.time))
+
+        return res.status(200).json({ "message": "Mail sent" })
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ "message": "something went wrong from otp" })
+    }
+
+}
 
 const verifyOtp = async (req, res) => {
     try {
@@ -44,4 +60,4 @@ function generateOtp() {
     }
     return retVal;
 }
-module.exports = {sendOtp, verifyOtp}
+module.exports = {sendOtp, verifyOtp,sendConfirmation}

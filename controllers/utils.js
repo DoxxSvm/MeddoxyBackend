@@ -25,9 +25,10 @@ const favDoctorsDetails = async(req,res) =>{
 const addFavDoctor = async(req,res) =>{
     const {doctorID,patientID} = req.body
     console.log(patientID)
-    const patientData = await patient.find({ patientID:patientID })
+    const patientData = await patient.findOne({ patientID:patientID })
     console.log(patientData)
     var list = patientData.favouriteDoctor
+    console.log(list)
     if(!list) list = []
     list.push(doctorID)
     console.log(list)

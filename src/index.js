@@ -4,6 +4,7 @@ const appointmentRouter = require('../routes/appointmentRoutes')
 const appointment = require('../models/Appointment')
 const mongoose = require('mongoose')
 const dotevn = require('dotenv')
+const {docSignup} = require('../controllers/patientAuth')
 const app = express()
 // INITIALIZE NPMS
 var AWS = require('aws-sdk'),multer = require('multer'),multerS3 = require('multer-s3'),path = require('path');
@@ -43,7 +44,7 @@ var upload = multer({
         const filetypes = /jpeg|jpg|png/;
         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
         const mimetype = filetypes.test(file.mimetype);
-        if (mimetype && extname) {
+        if (true) {
             return cb(null, true);
         } else {
             cb("Error: Allow images only of extensions jpeg|jpg|png !");
@@ -81,6 +82,7 @@ mongoose.connect(MONGO_URI)
     app.listen(port,()=>{
         
         console.log("server started at port "+port)
+        //docSignup()
     })
 }).catch(()=>{
 

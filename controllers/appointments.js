@@ -10,7 +10,7 @@ const requestAppointment =async(req,res)=>{
         const id = generateUserID()
         console.log(id)
         const _patient = await patient.findOne({patientID:patientID})
-        const _doctor = await patient.findOne({doctorID:doctorID})
+        const _doctor = await doctor.findOne({doctorID:doctorID})
         const result = await appointment.create({
             appointmentID:id,
             doctorID:doctorID,

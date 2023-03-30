@@ -39,9 +39,12 @@ const signin = async (req,res) =>{
         res.status(500).json({"message":"something went wrong"})
     }
 }
- const docSignup=async()=>{
+ const docSignup=async(req,res)=>{
     const {email,name,address,days,fees,speciality,description,experience} = req.body
     try {
+
+        const id = generateUserID()
+        console.log(id)
     
         // const hashedPass = await bcrypt.hash(password, 10)
         
